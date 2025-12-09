@@ -8,13 +8,11 @@ const apiURL = 'https://api.lyrics.ovh';
 
 // ===== SEARCH BY SONG OR ARTIST =====
 async function searchSongs(term) {
-  // NOTE: the slash (/) after "suggest" is important
   const res = await fetch(`${apiURL}/suggest/${term}`);
   const data = await res.json();
 
-  // Instead of console.log, we now show the data in the page:
-  // showDataUnsafe(data); // if you want to use the innerHTML version
-  showDataSafe(data); // safer DOM building version
+  // Replace console.log with our display function
+  showDataSafe(data);
 }
 
 // ===== SHOW SONGS IN THE DOM (SAFE VERSION) =====
@@ -23,6 +21,12 @@ function showDataSafe(lyrics) {
   result.innerHTML = '';
   more.innerHTML = '';
 
+  // ⭐ CUSTOM FEATURE #7 — Show number of results
+  const count = document.createElement('h2');
+  count.textContent = `Found ${lyrics.data.length} results`;
+  result.appendChild(count);
+
+  // Build the <ul> containing songs
   const ul = document.createElement('ul');
   ul.className = 'songs';
 
@@ -30,7 +34,6 @@ function showDataSafe(lyrics) {
     const li = document.createElement('li');
 
     const span = document.createElement('span');
-
     const strong = document.createElement('strong');
     strong.textContent = song.artist.name;
 
@@ -38,6 +41,7 @@ function showDataSafe(lyrics) {
     span.appendChild(document.createTextNode(` - ${song.title}`));
     li.appendChild(span);
 
+    // "Get Lyrics" button
     const button = document.createElement('button');
     button.className = 'btn';
     button.textContent = 'Get Lyrics';
@@ -50,7 +54,7 @@ function showDataSafe(lyrics) {
 
   result.appendChild(ul);
 
-  // Pagination buttons (Prev / Next)
+  // ===== PAGINATION BUTTONS =====
   if (lyrics.prev || lyrics.next) {
     if (lyrics.prev) {
       const prevButton = document.createElement('button');
@@ -72,14 +76,13 @@ function showDataSafe(lyrics) {
 
 // ===== GET MORE SONGS (PAGINATION) =====
 async function getMoreSongs(url) {
-  // The API gives you a next/prev URL. We just fetch that URL.
   const res = await fetch(url);
   const data = await res.json();
 
   showDataSafe(data);
 }
 
-// ===== CLICK HANDLER FOR "GET LYRICS" BUTTONS =====
+// ===== HANDLE "GET LYRICS" BUTTON CLICKS =====
 result.addEventListener('click', (e) => {
   const clickedEl = e.target;
 
@@ -87,38 +90,39 @@ result.addEventListener('click', (e) => {
     const artist = clickedEl.getAttribute('data-artist');
     const songTitle = clickedEl.getAttribute('data-songtitle');
 
-    // getLyricsUnsafe(artist, songTitle);
     getLyricsSafe(artist, songTitle);
   }
 });
 
-// ===== GET LYRICS FOR SONG (SAFE VERSION) =====
+// ===== GET LYRICS FOR A SONG =====
 async function getLyricsSafe(artist, songTitle) {
   const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
   const data = await res.json();
 
-  // Clear old content
+  // Clear the display area
   result.innerHTML = '';
   more.innerHTML = '';
 
+  // If API returns an error
   if (data.error) {
     const errorMessage = document.createElement('p');
     errorMessage.textContent = data.error;
-    result.append(errorMessage);
+    result.appendChild(errorMessage);
     return;
   }
 
-  // Create heading
+  // Song title heading
   const heading = document.createElement('h2');
   const strong = document.createElement('strong');
   strong.textContent = artist;
 
   heading.append(strong, ` - ${songTitle}`);
-  result.append(heading);
+  result.appendChild(heading);
 
-  // Create lyrics block with line breaks
+  // Build lyrics with proper line breaks
   const span = document.createElement('span');
   const lines = data.lyrics.split(/\r\n|\r|\n/);
+
   lines.forEach((line, index) => {
     span.append(line);
     if (index < lines.length - 1) {
@@ -126,10 +130,10 @@ async function getLyricsSafe(artist, songTitle) {
     }
   });
 
-  result.append(span);
+  result.appendChild(span);
 }
 
-// ===== FORM SUBMIT EVENT =====
+// ===== HANDLE SEARCH FORM SUBMISSION =====
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
