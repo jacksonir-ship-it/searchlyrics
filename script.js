@@ -21,7 +21,7 @@ function showDataSafe(lyrics) {
   result.innerHTML = '';
   more.innerHTML = '';
 
-  // ⭐ CUSTOM FEATURE #7 — Show number of results
+  // ⭐ CUSTOM FEATURE 2 — Show number of results
   const count = document.createElement('h2');
   count.textContent = `Found ${lyrics.data.length} results`;
   result.appendChild(count);
