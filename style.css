@@ -3,14 +3,14 @@
   box-sizing: border-box;
 }
 
-/* PAGE BACKGROUND + BASE FONT */
+/* Retro cream background */
 body {
-  background-color: #d8a63a; /* retro cream instead of pure white */
+  background-color: #FFF7E6; /* cream */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
 }
 
-/* BASIC BUTTON BEHAVIOR */
+/* Buttons */
 button {
   cursor: pointer;
 }
@@ -24,13 +24,13 @@ button:focus {
   outline: none;
 }
 
-/* HERO HEADER WITH IMAGE */
+/* Header with image background */
 header {
   background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  color: #fff; /* white text over image */
+  color: #FFF7E6; /* cream text */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +39,7 @@ header {
   position: relative;
 }
 
-/* DARK OVERLAY ON HEADER IMAGE SO TEXT IS LEGIBLE */
+/* Dark overlay on header */
 header::after {
   content: '';
   position: absolute;
@@ -50,16 +50,18 @@ header::after {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-/* KEEP HEADER CONTENT ABOVE THE OVERLAY */
+/* Keep content above overlay */
 header * {
   z-index: 1;
 }
 
 header h1 {
   margin: 0 0 30px;
+  color: #F2C94C; /* golden yellow */
+  text-shadow: 1px 1px 0 #5B3A29; /* brown retro pop */
 }
 
-/* FORM STYLES */
+/* Form */
 form {
   position: relative;
   width: 500px;
@@ -74,7 +76,7 @@ form input {
   width: 100%;
 }
 
-/* SEARCH BUTTON – RETRO GOLD + BROWN */
+/* Search button – retro gold */
 form button {
   position: absolute;
   top: 2px;
@@ -82,13 +84,13 @@ form button {
   background-color: #F2C94C; /* golden yellow */
   border: 0;
   border-radius: 50px;
-  color: #5B3A29; /* chocolate brown text */
+  color: #5B3A29; /* brown text */
   font-size: 16px;
   padding: 13px 30px;
   transition: 0.2s ease-in-out;
 }
 
-/* JS-INJECTED BUTTONS (GET LYRICS, PREV, NEXT) – RETRO ORANGE */
+/* JS-injected buttons (Get Lyrics / Prev / Next) – burnt orange */
 .btn {
   background-color: #D97706; /* burnt orange */
   border: 0;
@@ -98,14 +100,14 @@ form button {
   transition: 0.2s ease-in-out;
 }
 
-/* HOVER EFFECT FOR ALL BUTTONS */
+/* Hover effect */
 .btn:hover,
 form button:hover {
   background-color: #6A7F2A; /* olive green */
   transform: scale(1.08);
 }
 
-/* SONG LIST */
+/* Song list */
 ul.songs {
   list-style-type: none;
   padding: 0;
@@ -116,27 +118,33 @@ ul.songs li {
   align-items: center;
   justify-content: space-between;
   margin: 10px 0;
+  padding: 8px;
+  background-color: #FFEBC6; /* pale retro beige */
+  border-radius: 8px;
+  border: 1px solid #F2C94C; /* gold border */
 }
 
-/* MAIN CONTENT CONTAINER */
+/* Main container */
 .container {
   margin: 30px auto;
   max-width: 100%;
   width: 500px;
 }
 
+/* Heading styling */
 .container h2 {
   font-weight: 300;
   text-align: center;
-  color: #5B3A29; /* brown headings */
+  color: #5B3A29; /* brown */
+  text-shadow: 1px 1px 0 #F2C94C;
 }
 
 .container p {
   text-align: center;
-  color: #5B3A29; /* brown text */
+  color: #5B3A29;
 }
 
-/* PREV/NEXT BUTTONS CENTERING */
+/* Prev/Next centering */
 .centered {
   display: flex;
   justify-content: center;
@@ -145,4 +153,71 @@ ul.songs li {
 .centered button {
   transform: scale(1.3);
   margin: 15px;
+}
+
+/* ========================================= */
+/*   CUSTOM FEATURE 3: Animated Music Notes   */
+/* ========================================= */
+
+.music-notes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Ignore clicks */
+  overflow: hidden;
+}
+
+.music-notes .note {
+  position: absolute;
+  font-size: 24px;
+  color: #F2C94C; /* golden yellow */
+  opacity: 0.8;
+  animation: floatUp 6s linear infinite;
+}
+
+/* Different starting positions, speeds, and delays */
+.music-notes .note:nth-child(1) {
+  left: 10%;
+  animation-duration: 7s;
+}
+
+.music-notes .note:nth-child(2) {
+  left: 30%;
+  animation-duration: 6s;
+  animation-delay: 1s;
+}
+
+.music-notes .note:nth-child(3) {
+  left: 50%;
+  animation-duration: 8s;
+  animation-delay: 0.5s;
+}
+
+.music-notes .note:nth-child(4) {
+  left: 70%;
+  animation-duration: 7.5s;
+  animation-delay: 1.5s;
+}
+
+.music-notes .note:nth-child(5) {
+  left: 85%;
+  animation-duration: 6.5s;
+  animation-delay: 0.8s;
+}
+
+/* Animation: float music notes upward */
+@keyframes floatUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
 }
